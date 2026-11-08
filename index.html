@@ -187,10 +187,10 @@ body[data-pane="2"] #hero{right:9vw;height:min(68%,580px)}
 #intro.gone{opacity:0;visibility:hidden}
 #intro .box{width:min(560px,86vw);text-align:center;color:#f4efe3}
 #intro svg{width:100%;height:150px;overflow:visible}
-#intro path{fill:none;stroke:#e5be5a;stroke-width:2.5;stroke-linejoin:round;stroke-dasharray:1600;stroke-dashoffset:1600;animation:draw 2.3s cubic-bezier(.5,0,.2,1) forwards;filter:drop-shadow(0 0 8px #e5be5a)}
+#intro path{fill:none;stroke:#e5be5a;stroke-width:2.5;stroke-linejoin:round;stroke-dasharray:1600;stroke-dashoffset:1600;animation:draw 1.1s cubic-bezier(.5,0,.2,1) forwards;filter:drop-shadow(0 0 8px #e5be5a)}
 @keyframes draw{to{stroke-dashoffset:0}}
-#intro h5{font-family:var(--serif);font-size:clamp(54px,12vw,96px);letter-spacing:.22em;font-weight:700;color:#e5be5a;margin:10px 0 0 .22em;opacity:0;animation:fadein 1s .9s forwards}
-#intro p{font-family:var(--mono);font-size:11px;letter-spacing:.34em;color:#a49f92;margin-top:6px;opacity:0;animation:fadein 1s 1.3s forwards}
+#intro h5{font-family:var(--serif);font-size:clamp(54px,12vw,96px);letter-spacing:.22em;font-weight:700;color:#e5be5a;margin:10px 0 0 .22em;opacity:0;animation:fadein .45s .35s forwards}
+#intro p{font-family:var(--mono);font-size:11px;letter-spacing:.34em;color:#a49f92;margin-top:6px;opacity:0;animation:fadein .45s .65s forwards}
 #intro .pc{font-family:var(--mono);font-size:12px;color:#e5be5a;margin-top:26px}
 @keyframes fadein{to{opacity:1}}
 
@@ -217,7 +217,7 @@ body[data-pane="2"] #hero{right:9vw;height:min(68%,580px)}
   <div class="box">
     <svg viewBox="0 0 560 150" preserveAspectRatio="none" aria-hidden="true"><path id="ipath" d=""/></svg>
     <h5>VEE</h5><p>TRADING ACADEMY</p>
-    <div class="pc" id="ipc">0%</div>
+    
   </div>
 </div>
 
@@ -663,10 +663,12 @@ go(hi>=0?hi:0,true);if(hi>=0)chart.switchTf(hi);
 requestAnimationFrame(placePill);
 document.fonts&&document.fonts.ready.then(placePill);
 
-const intro=$('#intro');let pc=0,done=false;
+const intro=$('#intro');let done=false;
 function closeIntro(){if(done)return;done=true;intro.classList.add('gone')}
-const iv=setInterval(()=>{pc=Math.min(100,pc+(reduce?50:3+Math.random()*5));$('#ipc').textContent=Math.floor(pc)+'%';if(pc>=100){clearInterval(iv);setTimeout(closeIntro,350)}},70);
-intro.onclick=closeIntro;intro.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')closeIntro()};
+// Кратко автоматично представяне; не изисква клик и не блокира сайта.
+setTimeout(closeIntro,1600);
+intro.onclick=closeIntro;
+intro.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')closeIntro()};
 })();
 </script>
 </body>
