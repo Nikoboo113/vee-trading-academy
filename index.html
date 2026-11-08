@@ -217,7 +217,7 @@ body[data-pane="2"] #hero{right:9vw;height:min(68%,580px)}
   <div class="box">
     <svg viewBox="0 0 560 150" preserveAspectRatio="none" aria-hidden="true"><path id="ipath" d=""/></svg>
     <h5>VEE</h5><p>TRADING ACADEMY</p>
-    <div class="pc" id="ipc">0%</div><p id="soundPrompt" style="margin-top:14px;letter-spacing:.08em;font-size:13px;color:#e5be5a">Натисни, за да влезеш със звук</p>
+    <div class="pc" id="ipc">0%</div>
   </div>
 </div>
 
@@ -453,6 +453,7 @@ $('#theme').onclick=()=>{setTheme(document.body.dataset.theme==='dark'?'light':'
 let ac=null,snd=false;
 function blip(f=660,d=.1,v=.05){if(!snd)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime;o.type='sine';o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(f*1.5,t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(ac.destination);o.start(t);o.stop(t+d)}catch(e){}}
 $('#snd').onclick=function(){snd=!snd;this.classList.toggle('off',!snd);this.setAttribute('aria-pressed',snd);blip(880,.14)};
+document.addEventListener('pointerdown',e=>{if(snd||e.target.closest('#snd')||e.target.closest('#intro'))return;snd=true;$('#snd').classList.remove('off');$('#snd').setAttribute('aria-pressed','true')},{once:true});
 
 /* ===== Споделяне ===== */
 const pageUrl=()=>location.href.split('#')[0];
@@ -663,9 +664,9 @@ requestAnimationFrame(placePill);
 document.fonts&&document.fonts.ready.then(placePill);
 
 const intro=$('#intro');let pc=0,done=false;
-function closeIntro(withSound=false){if(done)return;done=true;if(withSound){snd=true;$('#snd').classList.remove('off');$('#snd').setAttribute('aria-pressed','true');blip(520,.2)}intro.classList.add('gone')}
-const iv=setInterval(()=>{pc=Math.min(100,pc+(reduce?50:3+Math.random()*5));$('#ipc').textContent=Math.floor(pc)+'%';if(pc>=100){clearInterval(iv);setTimeout(()=>{if(!done){$('#ipc').textContent='100%';$('#soundPrompt').textContent='Натисни за вход със звук'}},350)}},70);
-intro.onclick=()=>closeIntro(true);intro.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')closeIntro(true)};
+function closeIntro(){if(done)return;done=true;intro.classList.add('gone')}
+const iv=setInterval(()=>{pc=Math.min(100,pc+(reduce?50:3+Math.random()*5));$('#ipc').textContent=Math.floor(pc)+'%';if(pc>=100){clearInterval(iv);setTimeout(closeIntro,350)}},70);
+intro.onclick=closeIntro;intro.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')closeIntro()};
 })();
 </script>
 </body>
